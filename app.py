@@ -5,11 +5,17 @@ Here's our first attempt at using data to create a table:
 
 import streamlit as st
 
+import pandas as pd
+import numpy as np
 import tensorflow as keras
 from keras.models import load_model
 from sklearn.preprocessing import MinMaxScaler
 
 
+name_file = "test.xlsx"
+data = pd.read_excel(name_file)
+data.columns = ['rain_fall', 'Accumulated_rain', 'Water_level', 'Water_quantity']
+print(data)
 
 features = ['Accumulated_rain', 'Water_quantity']
 target = ['Water_level']
@@ -30,13 +36,6 @@ y_scaled = target_scaler.fit_transform(y)
 
 
 X_test = X_scaled.reshape(-1, 10, X_scaled.shape[1]) # Reshape to 3D array for LSTM input
-
-print(X_test.shape)
-print("\n")
-print(X_test)
-print("\n")
-print()
-print(y_scaled)
 
 
 """
