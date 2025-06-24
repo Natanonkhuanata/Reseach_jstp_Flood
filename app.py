@@ -15,7 +15,6 @@ from sklearn.preprocessing import MinMaxScaler
 name_file = "test.xlsx"
 data = pd.read_excel(name_file)
 data.columns = ['rain_fall', 'Accumulated_rain', 'Water_level', 'Water_quantity']
-print(data)
 
 features = ['Accumulated_rain', 'Water_quantity']
 target = ['Water_level']
@@ -37,17 +36,6 @@ y_scaled = target_scaler.fit_transform(y)
 
 X_test = X_scaled.reshape(-1, 10, X_scaled.shape[1]) # Reshape to 3D array for LSTM input
 
-
-"""
-print(features_test.shape)
-print(target_test.shape)
-print("\n")
-print(features_test)
-print(target_test)
-
-"""
-
-#"""
 # Load the prediction model
 model = load_model("my_model_3_year_ago.keras")
 
@@ -57,6 +45,6 @@ print(y_pred.shape)
 
 y_test_inv = target_scaler.inverse_transform(y_scaled)
 y_pred_inv = target_scaler.inverse_transform(y_pred)
-#print("prediction :", f"{y_pred_inv[0][0]:.2f}")
+
 
 st.write(f"{y_pred_inv[0][0]:.2f}")
