@@ -35,3 +35,10 @@ map_data_01 = pd.DataFrame(
     columns=['lat', 'lon'])
 
 st.map(map_data_01)
+
+data_01 = pd.DataFrame({
+  'first column': [5, 6, 7, 8],
+  'second column': [10, 20, 30, 40]
+})
+
+st.write(data_01)
