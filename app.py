@@ -4,41 +4,59 @@ Here's our first attempt at using data to create a table:
 """
 
 import streamlit as st
-import pandas as pd
-import numpy as np
+
+import tensorflow as keras
+from keras.models import load_model
+from sklearn.preprocessing import MinMaxScaler
 
 
 
-df = pd.DataFrame({
-  'first column': [1, 2, 3, 4],
-  'second column': [10, 20, 30, 40]
-})
+features = ['Accumulated_rain', 'Water_quantity']
+target = ['Water_level']
+# แยกชุดข้อมูล
+X = data[features].values
+X_rain = data['rain_fall'].values.reshape(-1, 1)
+X = X.reshape(-1, len(features)) # Reshape to ensure y is a 2D array
+# Normalize features
+features_scaler = MinMaxScaler()
+X_scaled = features_scaler.fit_transform(X)
+X_scaled = np.hstack((X_rain , X_scaled))
 
-st.write("Hello Streamlit")
-st.write(df)
+# Normalize target
+y = data[target].values
+y = y.reshape(-1, 1) # Reshape to ensure y is a 2D array
+target_scaler = MinMaxScaler()
+y_scaled = target_scaler.fit_transform(y)
 
-map_data = pd.DataFrame(
-    np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
-    columns=['lat', 'lon'])
 
-st.map(map_data)
+X_test = X_scaled.reshape(-1, 10, X_scaled.shape[1]) # Reshape to 3D array for LSTM input
 
-data = pd.DataFrame({
-  'first column': [5, 6, 7, 8],
-  'second column': [10, 20, 30, 40]
-})
+print(X_test.shape)
+print("\n")
+print(X_test)
+print("\n")
+print()
+print(y_scaled)
 
-st.write(data)
 
-map_data_01 = pd.DataFrame(
-    np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4],
-    columns=['lat', 'lon'])
+"""
+print(features_test.shape)
+print(target_test.shape)
+print("\n")
+print(features_test)
+print(target_test)
 
-st.map(map_data_01)
+"""
 
-data_01 = pd.DataFrame({
-  'first column': [5, 6, 7, 8],
-  'second column': [10, 20, 30, 40]
-})
+#"""
+# Load the prediction model
+model = load_model("my_model_3_year_ago.keras")
 
-st.write(data_01)
+y_pred = model.predict(X_test)
+print(y_pred)
+print(y_pred.shape)
+
+y_test_inv = target_scaler.inverse_transform(y_scaled)
+y_pred_inv = target_scaler.inverse_transform(y_pred)
+print("prediction :", f"{y_pred_inv[0][0]:.2f}")
+st.write(f"{y_pred_inv[0][0]:.2f}")
