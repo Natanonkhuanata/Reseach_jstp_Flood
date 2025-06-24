@@ -58,5 +58,6 @@ print(y_pred.shape)
 
 y_test_inv = target_scaler.inverse_transform(y_scaled)
 y_pred_inv = target_scaler.inverse_transform(y_pred)
-print("prediction :", f"{y_pred_inv[0][0]:.2f}")
+#print("prediction :", f"{y_pred_inv[0][0]:.2f}")
+
 st.write(f"{y_pred_inv[0][0]:.2f}")
